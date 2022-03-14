@@ -2,15 +2,15 @@
 
 volatile int *timer_ptr = (int *)MPCORE_PRIV_TIMER;
 volatile int *seconds_display_ptr = (int *)HEX3_HEX0_BASE;
-volatile int *hour_display_ptr = (int *)HEX5_HEX4_BASE;
+volatile int *minutes_display_ptr = (int *)HEX5_HEX4_BASE;
 
-typedef struct a9_timer
+typedef struct _A9_timer
 {
     int load;
     int curVal;
     int control;
     int interruptStatus;
-};
+} A9_timer;
 
 // Displays number on 7 seg display
 void DisplayHex(int ms, int s, int min)
@@ -26,6 +26,12 @@ void DisplayHex(int ms, int s, int min)
     lookUpTable[7] = 0x07;
     lookUpTable[8] = 0x7F;
     lookUpTable[9] = 0x67;
+
+    // Displaying seconds and milliseconds
+    *seconds_display_ptr = lookUpTable[s / 10] << 24 | lookUpTable[s % 10] << 16 | lookUpTable[ms / 10] << 8 | lookUpTable[ms % 10];
+
+    // Displaying minutes
+    *minutes_display_ptr = lookUpTable[min / 10] << 8 | lookUpTable[min % 10];
 }
 
 // Reads switches
@@ -46,6 +52,9 @@ int main(void)
 {
     volatile int DELAY_LENGTH = 2000000; // Hundredth of a second because 1 second = 200,000,000 for 200Mhz clock
 
+    // Set to 1 if timer is running
+    int runnning = 0;
+
     // Initial timer values
     int ms = 0;
     int s = 0;
@@ -56,5 +65,10 @@ int main(void)
     int lap_s = 0;
     int lap_min = 0;
 
+    // Sets initial display to 00:00:00
     DisplayHex(ms, s, min);
+
+    while (1)
+    {
+    }
 }
