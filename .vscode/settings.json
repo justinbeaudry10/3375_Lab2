@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.ejs": "html",
+    "address_map_arm.h": "c"
+  }
+}
