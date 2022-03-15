@@ -7,7 +7,6 @@
 // #define SW_BASE 0xFF200040
 // #define KEY_BASE 0xFF200050
 
-// volatile int *timer_ptr = (int *)MPCORE_PRIV_TIMER;
 volatile int *seconds_display_ptr = (int *)HEX3_HEX0_BASE;
 volatile int *minutes_display_ptr = (int *)HEX5_HEX4_BASE;
 
@@ -65,6 +64,7 @@ int main(void)
     // Initialize timer for 1ms interval
     timer->load = interval;
 
+    // Is 1 if the timer is running, 0 if it is stopped
     int running = 0;
 
     // Initial timer values
